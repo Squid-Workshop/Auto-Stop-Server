@@ -9,9 +9,10 @@ def add_text_to_img(texts):
     postfix = '.png'
     idx_beg = 31
     idx_end = 162
-    images = [Image.open(src_dir + img_name + str(idx) + postfix) for idx in range(idx_beg, idx_end, 1)]
+    images = []
     canvas = Image.open(src_dir + 'canvas.png')
-    width, height = images[0].size
+    image = Image.open(src_dir + img_name + str(idx_beg) + postfix)
+    width, height = image.size
 
     # resize canvas
     nof_canvas = len(texts)
@@ -33,11 +34,12 @@ def add_text_to_img(texts):
     font_size = 120
     font = ImageFont.truetype('assets/PersonnBold-x3l4R.ttf', font_size)
 
-    for i in range(0, idx_end - idx_beg, 1):
+    for idx in range(idx_beg, idx_end, 1):
+        image = Image.open(src_dir + img_name + str(idx) + postfix)
         for j in range(0, nof_canvas, 1):
-            images[i].paste(canvas, (x_canvas, y_canvas))
+            image.paste(canvas, (x_canvas, y_canvas))
 
-            image_draw = ImageDraw.Draw(images[i])
+            image_draw = ImageDraw.Draw(image)
             text_pos_x = x_canvas + x_text_gap
             text_pos_y = y_canvas + y_text_gap
             for text in texts[j]:
@@ -45,13 +47,13 @@ def add_text_to_img(texts):
                 text_pos_y += y_text
 
             x_canvas += canvas_width + x_gap
-        images[i].save(dest_dir + img_name + str(idx_beg + i) + postfix)
-        images[i].close()
+        image.save(dest_dir + img_name + str(idx) + postfix)
+        image.close()
     canvas.close()
+
 
 if __name__ == '__main__':
     test_texts = (("area: 21 chunks", "land coverage: 87.2%"),
-             ("diamond: 2.19%", "gold: 3.14%"),
-             ("fossil", "mineshaft", "temple"))
+                  ("diamond: 2.19%", "gold: 3.14%"),
+                  ("fossil", "mineshaft", "temple"))
     add_text_to_img(test_texts)
-
