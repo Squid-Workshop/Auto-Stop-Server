@@ -144,3 +144,5 @@ assets/hdimage96.png
 assets/hdimage97.png
 assets/hdimage98.png
 assets/hdimage99.png
+*.png
+assets/*
